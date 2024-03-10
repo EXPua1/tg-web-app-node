@@ -83,6 +83,6 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
-const PORT = 8000;
+const PORT = 3000;
 
 app.listen(PORT, () => console.log('server started on PORT ' + PORT))
