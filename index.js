@@ -1,12 +1,21 @@
 const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const cors = require('cors');
+const morgan = require('morgan');
+const fs = require('fs');
+const path = require('path');
 
 const token = '7184725401:AAEZHG_PCzgJAEuJ1s0Cay62qjhBzFbIsE8';
 const webAppUrl = 'https://cosmic-pastelito-ec955f.netlify.app';
 
-const bot = new TelegramBot(token, {polling: true});
+const bot = new TelegramBot(token, { polling: true });
 const app = express();
+
+// Создаем поток для записи логов в файл
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
+
+// Используем middleware morgan для логирования запросов в файл
+app.use(morgan('combined', { stream: accessLogStream }));
 
 app.use(express.json());
 app.use(cors());
@@ -45,7 +54,7 @@ bot.on('message', async (msg) => {
                 await bot.sendMessage(chatId, 'Всю информацию вы получите в этом чате');
             }, 3000)
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
     }
 });
@@ -63,9 +72,16 @@ app.post('/web-data', async (req, res) => {
         })
         return res.status(200).json({});
     } catch (e) {
-        return res.status(500).json({})
+        console.error(e);
+        return res.status(500).json({});
     }
 })
+
+// Middleware для обработки ошибок
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
 
 const PORT = 8000;
 
