@@ -4,7 +4,7 @@ const cors = require('cors');
 
 
 const token = '7184725401:AAEZHG_PCzgJAEuJ1s0Cay62qjhBzFbIsE8';
-const webAppUrl = 'https://cosmic-pastelito-ec955f.netlify.app';
+const webAppUrl = 'https://mytrycrea.netlify.app/';
 const bot = new TelegramBot(token, {polling: true});
 const app = express();
 
