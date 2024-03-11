@@ -49,7 +49,9 @@ bot.on('message', async (msg) => {
         }
     }
 });
-
+app.get('/', (req, res) => {
+    res.send('Сервер работает'); // или любой другой текст или HTML-код
+});
 app.post('/web-data', async (req, res) => {
     const {queryId, products = [], totalPrice} = req.body;
     try {
