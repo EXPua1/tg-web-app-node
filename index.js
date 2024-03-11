@@ -1,12 +1,15 @@
 const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const cors = require('cors');
-
+const morgan = require('morgan')
 
 const token = '7184725401:AAEZHG_PCzgJAEuJ1s0Cay62qjhBzFbIsE8';
 const webAppUrl = 'https://cosmic-pastelito-ec955f.netlify.app';
 const bot = new TelegramBot(token, { polling: true });
 const app = express();
+
+// Используем morgan для логирования HTTP-запросов в консоль
+app.use(morgan('dev'));
 
 app.use(express.json());
 app.use(cors());
@@ -74,3 +77,4 @@ app.post('/web-data', async (req, res) => {
 
 const PORT = 8081;
 app.listen(PORT, () => console.log('server started on PORT ' + PORT))
+
